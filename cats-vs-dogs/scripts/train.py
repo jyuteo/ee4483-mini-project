@@ -175,7 +175,7 @@ def train(
             time_elapsed // 60, time_elapsed % 60
         )
     )
-    print("Best test accuracy (clean): {:4f}".format(best_acc))
+    print("Best valid accuracy: {:4f}".format(best_acc))
 
     model.load_state_dict(best_model_weight)
     return model
@@ -263,7 +263,7 @@ if __name__ == "__main__":
         default="../models/",
         help="dir for saving trained models",
     )
-    parser.add_argument("--num_epochs", type=int, default=100)
+    parser.add_argument("--num_epochs", type=int, default=10)
     parser.add_argument("--batch_size", type=int, default=64)
     parser.add_argument("--num_workers", type=int, default=4)
     parser.add_argument("--lr", type=float, default=0.001, help="learning_rate")
