@@ -4,9 +4,13 @@ __pycache__/
 *$py.class
 __MACOSX/
 */.ipynb_checkpoints
+.vscode
 
 # Dataset
 */datasets/*
+
+# Terminal output
+*.out
 
 # Distribution / packaging
 .Python
