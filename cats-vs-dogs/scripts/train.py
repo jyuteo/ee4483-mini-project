@@ -1,7 +1,6 @@
 import time
 import os
 import copy
-import math
 import time
 import random
 import argparse
@@ -10,7 +9,6 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import torchvision
 
 from tqdm import tqdm
 from torch.optim import lr_scheduler
