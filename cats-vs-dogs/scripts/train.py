@@ -18,6 +18,7 @@ from tqdm import tqdm
 from torch.optim import lr_scheduler
 from torchvision import datasets, transforms
 from models.resnet import resnet50, resnet18
+from models.vgg import vgg16
 
 # from dataloader import get_dataloader
 
@@ -76,6 +77,11 @@ def get_model(model_name):
         model = resnet18()
         model.fc = nn.Sequential(
             nn.Linear(in_features=512, out_features=2, bias=True), nn.Softmax(dim=1)
+        )
+    elif model_name == "vgg16":
+        model = vgg16()
+        model.fc = nn.Sequential(
+            nn.Linear(in_features=1024, out_features=2, bias=True), nn.Softmax(dim=1)
         )
     else:
         raise Exception("Invalid model name")
@@ -289,7 +295,7 @@ def main(args):
 
     class_names = image_datasets["train"].classes
     print("Classes: {}".format(class_names))
-    device = torch.device("cuda:3" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print("Device: {}".format(device))
     print()
 
