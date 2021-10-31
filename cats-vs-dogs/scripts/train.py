@@ -81,7 +81,7 @@ def get_model(model_name):
     elif model_name == "vgg16":
         model = vgg16()
         model.fc = nn.Sequential(
-            nn.Linear(in_features=1024, out_features=2, bias=True), nn.Softmax(dim=1)
+            nn.Linear(in_features=512, out_features=2, bias=True), nn.Softmax(dim=1)
         )
     else:
         raise Exception("Invalid model name")
