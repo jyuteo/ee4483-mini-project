@@ -18,8 +18,7 @@ from tqdm import tqdm
 from torch.optim import lr_scheduler
 from torchvision import datasets, transforms
 from models.resnet import resnet50, resnet18
-
-# from dataloader import get_dataloader
+from models.vgg import vgg16
 
 IMAGE_SIZE = (224, 224)
 
@@ -68,15 +67,14 @@ def plot_graphs(output_dir, num_epochs):
 
 def get_model(model_name):
     if model_name == "resnet50":
-        model = resnet50()
-        model.fc = nn.Sequential(
-            nn.Linear(in_features=2048, out_features=2, bias=True), nn.Softmax(dim=1)
-        )
+        model = resnet50(num_classes=2)
+        print(model)
     elif model_name == "resnet18":
-        model = resnet18()
-        model.fc = nn.Sequential(
-            nn.Linear(in_features=512, out_features=2, bias=True), nn.Softmax(dim=1)
-        )
+        model = resnet18(num_classes=2)
+        print(model)
+    elif model_name == "vgg16":
+        model = vgg16(num_classes=2)
+        print(model)
     else:
         raise Exception("Invalid model name")
     return model
@@ -229,8 +227,7 @@ def train(
                 train_loss, train_acc, val_loss, val_acc, lr_scheduler.get_last_lr()[0]
             )
         )
-        # print("Valid Loss: {:.5f} Acc: {:.4f}".format(val_loss, val_acc))
-        # print("Base LR: {:.6f}".format(lr_scheduler.get_last_lr()[0]))
+
         lr_scheduler.step()
 
         if val_acc > best_acc:
@@ -289,7 +286,7 @@ def main(args):
 
     class_names = image_datasets["train"].classes
     print("Classes: {}".format(class_names))
-    device = torch.device("cuda:3" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
     print("Device: {}".format(device))
     print()
 
@@ -302,6 +299,7 @@ def main(args):
     num_epochs = args.num_epochs
     criterion = nn.CrossEntropyLoss(reduction="sum")
     optimizer = optim.Adam(model.parameters(), lr=lr)
+    # optimizer = optim.SGD(model.parameters(), lr=lr, momentum=0.9)
     exp_lr_scheduler = lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.8)
 
     trained_model = train(
@@ -334,7 +332,7 @@ if __name__ == "__main__":
         default="../models/",
         help="dir for saving trained models",
     )
-    parser.add_argument("--num_epochs", type=int, default=120)
+    parser.add_argument("--num_epochs", type=int, default=200)
     parser.add_argument("--batch_size", type=int, default=64)
     parser.add_argument("--num_workers", type=int, default=4)
     parser.add_argument("--lr", type=float, default=0.0001, help="learning_rate")
