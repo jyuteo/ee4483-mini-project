@@ -346,7 +346,7 @@ if __name__ == "__main__":
     parser.add_argument("--lr", type=float, default=0.0001, help="learning_rate")
     parser.add_argument(
         "--augment",
-        default=False,
+        default=True,
         action="store_true",
         help="whether to perform image augmentation to train images",
     )
