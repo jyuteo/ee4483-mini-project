@@ -302,7 +302,7 @@ def main(args):
         "Val set:",
         torch.unique(torch.Tensor(image_datasets["val"].targets), return_counts=True),
     )
-    device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda:3" if torch.cuda.is_available() else "cpu")
     print("Device: {}".format(device))
     print()
 

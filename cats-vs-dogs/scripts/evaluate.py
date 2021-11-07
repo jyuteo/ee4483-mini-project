@@ -35,6 +35,12 @@ def set_seed(seed):
 
 def get_model(model_path):
     model = torch.load(os.path.join(model_path, "model.pt"))
+    print(model)
+    print(
+        "Total trainable params: {}".format(
+            sum(dict((p.data_ptr(), p.numel()) for p in model.parameters()).values())
+        )
+    )
     return model
 
 
